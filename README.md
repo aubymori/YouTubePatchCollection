@@ -10,6 +10,10 @@ The latest and greatest experiment flag changer. Allows for changing normal flag
 
 Here's the script running on Vivaldi (Chromium based). As you can see, we've changed both normal config flags, and player experiment flags.
 
+## Credits
+
+* **Taniko Y.** - for writing the patcher, I simply expanded upon it
+
 ## Installation
 
 Make sure you have a UserScript manager like Tampermonkey, then click [here](https://raw.githubusercontent.com/aubymori/YouTubePatchCollection/main/YouTubePatchCollection.user.js).
