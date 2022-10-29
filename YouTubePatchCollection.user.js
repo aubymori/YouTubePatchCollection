@@ -1,4 +1,4 @@
-// ==// ==UserScript==
+// ==UserScript==
 // @name         YouTube Patch Collection
 // @version      2.0.0
 // @description  Allows for changing of yt.config_ values
