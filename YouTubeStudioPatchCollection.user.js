@@ -1,63 +1,26 @@
 // ==UserScript==
-// @name         YouTube Patch Collection
-// @version      2.1.0
-// @description  Allows for changing of yt.config_ values
+// @name         YouTube Studio Patch Collection
+// @version      1.0.0
+// @description  Allows for changing of yt.config_ values in YouTube Studio
 // @author       Aubrey Pankow (aubyomori@gmail.com)
 // @author       Taniko Yamamoto (kirasicecreamm@gmail.com)
 // @license      Unlicense
 // @updateURL    https://raw.githubusercontent.com/aubymori/YouTubePatchCollection/main/YouTubePatchCollection.user.js
-// @match        www.youtube.com/*
+// @match        studio.youtube.com/*
 // @icon         https://www.youtube.com/favicon.ico
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
 
 // Attributes to remove from <html>
-const ATTRS = [
-    "system-icons",
-    "typography",
-    "typography-spacing"
-];
+const ATTRS = [];
 
 // Regular config keys.
-const CONFIGS = {
-    BUTTON_REWORK: false
-};
+const CONFIGS = {};
 
 // Experiment flags.
 const EXPFLAGS = {
-    kevlar_system_icons: false,
-    render_unicode_emojis_as_small_images: true,
-    kevlar_unavailable_video_error_ui_client: false,
-    kevlar_refresh_on_theme_change: false,
-    kevlar_watch_metadata_refresh: false,
-    kevlar_watch_modern_metapanel: false,
-    web_amsterdam_playlists: false,
-    web_animated_like: false,
-    web_button_rework: false,
-    web_button_rework_with_live: false,
-    web_darker_dark_theme: false,
-    web_guide_ui_refresh: false,
-    web_modern_ads: false,
-    web_modern_buttons: false,
-    web_modern_chips: false,
-    web_modern_dialogs: false,
-    web_modern_playlists: false,
-    web_modern_subscribe: false,
-    web_rounded_containers: false,
-    web_rounded_thumbnails: false,
-    web_searchbar_style: "default",
-    web_sheets_ui_refresh: false
-};
-
-// Player flags
-// !!! USE STRINGS FOR VALUES !!!
-// For example: "true" instead of true
-const PLYRFLAGS = {
-    web_player_move_autonav_toggle: "false",
-    web_settings_menu_icons: "false",
-    web_rounded_containers: "false",
-    web_rounded_thumbnails: "false"
+    studio_system_icons: false,
 };
 
 class YTP {
@@ -130,48 +93,6 @@ class YTP {
 
         this.mergeDeep(this._config.EXPERIMENT_FLAGS, exps);
     }
-
-    static decodePlyrFlags(flags) {
-        var obj = {},
-            dflags = flags.split("&");
-
-        for (var i = 0; i < dflags.length; i++) {
-            var dflag = dflags[i].split("=");
-            obj[dflag[0]] = dflag[1];
-        }
-        
-        return obj;
-    }
-
-    static encodePlyrFlags(flags) {
-        var keys = Object.keys(flags),
-            response = "";
-
-        for (var i = 0; i < keys.length; i++) {
-            if (i > 0) {
-                response += "&";
-            }
-            response += keys[i] + "=" + flags[keys[i]];
-        }
-
-        return response;
-    }
-
-    static setPlyrFlags(flags) {
-        if (!window.yt) return;
-        if (!window.yt.config_) return;
-        if (!window.yt.config_.WEB_PLAYER_CONTEXT_CONFIGS) return;
-        var conCfgs = window.yt.config_.WEB_PLAYER_CONTEXT_CONFIGS;
-        if (!("WEB_PLAYER_CONTEXT_CONFIGS" in this._config)) this._config.WEB_PLAYER_CONTEXT_CONFIGS = {};
-
-        for (var cfg in conCfgs) {
-            var dflags = this.decodePlyrFlags(conCfgs[cfg].serializedExperimentFlags);
-            this.mergeDeep(dflags, flags);
-            this._config.WEB_PLAYER_CONTEXT_CONFIGS[cfg] = {
-                serializedExperimentFlags: this.encodePlyrFlags(dflags)
-            }
-        }
-    }
 }
 
 window.addEventListener("yt-page-data-updated", function tmp() {
@@ -186,4 +107,3 @@ YTP.start();
 
 YTP.setCfgMulti(CONFIGS);
 YTP.setExpMulti(EXPFLAGS);
-YTP.setPlyrFlags(PLYRFLAGS);
